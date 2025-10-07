@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test { margin: 20px 0; padding: 20px; border: 1px solid #ccc; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>Image Loading Test</h1>
+    
+    <div class="test">
+        <h2>Logo Image Test</h2>
+        <p>Path: images/logo.svg</p>
+        <img src="images/logo.svg" alt="Logo" style="max-width: 200px; border: 1px solid #ccc;">
+        <p id="logo-status" class="error">Logo image failed to load</p>
+    </div>
+    
+    <div class="test">
+        <h2>Hero Background Test</h2>
+        <p>Path: images/hero-bg.svg</p>
+        <div style="width: 300px; height: 200px; background: url('images/hero-bg.svg') no-repeat center center/cover; border: 1px solid #ccc;"></div>
+        <p id="hero-status" class="error">Hero background failed to load</p>
+    </div>
+
+    <script>
+        // Test logo image
+        const logoImg = new Image();
+        logoImg.onload = function() {
+            document.getElementById('logo-status').textContent = 'Logo image loaded successfully';
+            document.getElementById('logo-status').className = 'success';
+        };
+        logoImg.onerror = function() {
+            document.getElementById('logo-status').textContent = 'Error: Could not load logo image';
+            document.getElementById('logo-status').className = 'error';
+        };
+        logoImg.src = 'images/logo.svg';
+
+        // Test hero background
+        const heroImg = new Image();
+        heroImg.onload = function() {
+            document.getElementById('hero-status').textContent = 'Hero background loaded successfully';
+            document.getElementById('hero-status').className = 'success';
+        };
+        heroImg.onerror = function() {
+            document.getElementById('hero-status').textContent = 'Error: Could not load hero background';
+            document.getElementById('hero-status').className = 'error';
+        };
+        heroImg.src = 'images/hero-bg.svg';
+    </script>
+</body>
+</html>
