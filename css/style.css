@@ -159,6 +159,15 @@ img {
     overflow: hidden;
 }
 
+.cta-buttons-contact {
+    display: flex
+;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+
 /* Add clearfix for floated elements */
 .clearfix::after {
     content: "";
@@ -704,10 +713,15 @@ img {
     overflow: hidden;
 }
 
+.hero p {
+    font-size: 20px;
+    padding-right: 30px;
+    color: #f0f0f0;
+}
+
 .hero-container {
     display: flex;
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 20px;
     position: relative;
@@ -749,13 +763,6 @@ img {
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-.cta-buttons {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    justify-content: center;
-    
-}
 
 .hero-image {
     flex: 1;

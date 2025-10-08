@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="css/sections.css">
     <link rel="stylesheet" href="css/responsive.css">
     <link rel="stylesheet" href="css/whatsapp-button.css">
+    <link rel="stylesheet" href="css/animations.css">
 </head>
 <body>
     <!-- Navigation -->
@@ -39,13 +40,13 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero" id="home">
+    <section class="hero fade-in">
         <div class="container">
             <div class="hero-container">
                 <div class="hero-content">
-                    <h1>Start Your Qur'an Journey Today <span class="highlight">🌟</span></h1>
-                    <p class="lead">Learn Qur'an, Tajweed, Arabic, and Islamic Studies with native Arabic teachers from Al-Azhar University, certified with Ijazah, and 14+ years of teaching experience.</p>
-                    <div class="cta-buttons">
+                    <h1 class="slide-in-left">Start Your Qur'an Journey Today <span class="highlight">🌟</span></h1>
+                    <p class="slide-in-right delay-1">Learn Qur'an, Tajweed, Arabic, and Islamic Studies with native Arabic teachers from Al-Azhar University, certified with Ijazah, and 14+ years of teaching experience.</p>
+                    <div class="cta-buttons slide-in-up delay-2">
                         <a href="#contact" class="btn btn-primary">Book Your Free Trial Class</a>
                         <a href="#programs" class="btn btn-secondary">Explore Courses</a>
                     </div>
@@ -55,18 +56,18 @@
                 </div>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- Why Choose Us Section -->
-    <section class="why-us" id="why-us">
+    <section class="why-us fade-in" id="why-us">
         <div class="container clearfix">
-            <div class="section-header">
+            <div class="section-header slide-in-up">
                 <h2>Why Choose Us? <span class="highlight-ar">(لماذا تختارنا؟)</span></h2>
                 <p>At Qur'an Journey, we're committed to providing the best Quranic education with a personal touch</p>
             </div>
             
             <div class="why-us-grid">
-                <div class="why-us-card">
+                <div class="why-us-card fade-in delay-1">
                     <div class="why-us-icon">
                         <i class="fas fa-user-graduate"></i>
                     </div>
@@ -96,7 +97,7 @@
                     </div>
                 </div>
                 
-                <div class="why-us-card">
+                <div class="why-us-card fade-in delay-2">
                     <div class="why-us-icon">
                         <i class="fas fa-user-friends"></i>
                     </div>
@@ -106,9 +107,9 @@
                     </div>
                 </div>
                 
-                <div class="why-us-card">
+                <div class="why-us-card fade-in delay-5">
                     <div class="why-us-icon">
-                        <i class="fas fa-tags"></i>
+                        <i class="fas fa-laptop"></i>
                     </div>
                     <div class="why-us-content">
                         <h3>Affordable Packages</h3>
@@ -116,7 +117,7 @@
                     </div>
                 </div>
                 
-                <div class="why-us-card">
+                <div class="why-us-card fade-in delay-3">
                     <div class="why-us-icon">
                         <i class="fas fa-award"></i>
                     </div>
@@ -138,11 +139,11 @@
     </section>
 
     <!-- Programs/Courses Section -->
-    <section class="programs" id="programs">
-        <div class="container clearfix">
-            <div class="section-header">
-                <h2>Our Programs <span class="highlight-ar">(مختصر الكورسات  )</span></h2>
-                <p>Choose the perfect learning path for your spiritual journey</p>
+    <section class="programs fade-in" id="programs">
+        <div class="container">
+            <div class="section-header slide-in-up">
+                <h2>Our Programs <span class="highlight-ar">(برامجنا)</span></h2>
+                <p>Comprehensive courses designed for all levels of learners</p>
             </div>
             <div class="programs-grid">
                 <!-- Noor Al-Bayan Course -->
@@ -609,7 +610,7 @@
                 <p>Take your first step towards a stronger connection with the Qur'an.</p>
             </div>
             
-            <div class="cta-buttons">
+            <div class="cta-buttons-contact ">
                 <a href="#contact" class="btn btn-primary">
                     <i class="fas fa-calendar-check"></i> Book Your Free Trial Class
                 </a>
