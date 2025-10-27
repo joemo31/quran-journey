@@ -95,19 +95,19 @@ const testimonials = [
     }
 ];
 
-// Toggle mobile menu
-menuToggle.addEventListener('click', () => {
-    navLinks.classList.toggle('active');
-    menuToggle.classList.toggle('active');
-});
+// Toggle mobile menu (handled in js/navigation.js) - disable duplicate listener here
+// menuToggle.addEventListener('click', () => {
+//     navLinks.classList.toggle('active');
+//     menuToggle.classList.toggle('active');
+// });
 
-// Close mobile menu when clicking on a nav link
-document.querySelectorAll('.nav-links a').forEach(link => {
-    link.addEventListener('click', () => {
-        navLinks.classList.remove('active');
-        menuToggle.classList.remove('active');
-    });
-});
+// Close mobile menu when clicking on a nav link is handled in js/navigation.js
+// document.querySelectorAll('.nav-links a').forEach(link => {
+//     link.addEventListener('click', () => {
+//         navLinks.classList.remove('active');
+//         menuToggle.classList.remove('active');
+//     });
+// });
 
 // Navbar scroll effect
 window.addEventListener('scroll', () => {

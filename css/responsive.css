@@ -18,24 +18,7 @@
         z-index: 1001;
     }
     
-    .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 80%;
-        max-width: 300px;
-        height: 100vh;
-        background: white;
-        padding: 80px 20px 30px;
-        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        transition: right 0.3s ease-in-out;
-        z-index: 1000;
-        overflow-y: auto;
-    }
-    
-    .nav-links.active {
-        right: 0;
-    }
+    /* nav drawer behavior is defined in css/style.css; avoid duplicates here */
     
     .nav-links li {
         margin: 0;
@@ -186,15 +169,8 @@
         margin-bottom: 2rem;
     }
     
-    /* Ensure menu toggle is visible */
-    .menu-toggle {
-        display: flex !important;
-    }
-    
-    /* Hide desktop navigation */
-    .nav-links {
-        display: none;
-    }
+    /* Ensure menu toggle is visible without hiding the drawer via display:none here */
+    .menu-toggle { display: flex !important; }
     
     /* About Section - Mobile */
     .about {
@@ -274,10 +250,7 @@
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
     }
     
-    /* Show mobile menu when active */
-    .nav-links.active {
-        display: block;
-    }
+    /* Active state handled in css/style.css */
     
     /* Hide back to top on very small screens */
     .back-to-top {

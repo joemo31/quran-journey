@@ -51,6 +51,11 @@ body {
     position: relative;
 }
 
+/* When mobile menu is open, lock body scroll (safety in CSS in addition to JS) */
+body.menu-open {
+    overflow: hidden;
+}
+
 h1 {
     font-size: 36px;
     line-height: 1.2;
@@ -375,7 +380,7 @@ img {
     color: var(--dark-color);
     cursor: pointer;
     padding: 8px 12px;
-    z-index: 1001;
+    z-index: 2001; /* ensure above sliding panel */
     transition: all 0.3s ease;
     border-radius: 4px;
 }
@@ -414,12 +419,22 @@ img {
         justify-content: flex-start;
         padding: 80px 30px 30px;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
+        z-index: 2000;
+        transition: right 0.3s ease;
         overflow-y: auto;
+        will-change: transform;
     }
     
     .nav-links.active {
         right: 0;
+    }
+    
+    .navbar .nav-links.active {
+        right: 0 !important;
+    }
+    
+    body.menu-open {
+        overflow: hidden;
     }
     
     .nav-links li {
@@ -627,8 +642,10 @@ img {
         align-items: center;
         justify-content: center;
         padding: 80px 20px 40px;
-        z-index: 1000;
+        z-index: 2000;
         box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease;
+        will-change: right;
     }
     
     .nav-links.active {

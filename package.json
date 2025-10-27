@@ -1,0 +1,27 @@
+{
+  "name": "quran-joureny",
+  "version": "1.0.0",
+  "description": "A modern, responsive website for an online Quran and Islamic studies learning platform. This project is designed to be a complete frontend solution for an online Islamic education service, featuring course listings, teacher profiles, testimonials, and a contact form.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "postcss css/style.css -o css/style.min.css && postcss css/sections.css -o css/sections.min.css && postcss css/responsive.css -o css/responsive.min.css && postcss css/animations.css -o css/animations.min.css && postcss css/whatsapp-button.css -o css/whatsapp-button.min.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joemo31/quran-journey.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/joemo31/quran-journey/issues"
+  },
+  "homepage": "https://github.com/joemo31/quran-journey#readme",
+  "devDependencies": {
+    "cssnano": "^7.1.1",
+    "postcss": "^8.5.6",
+    "postcss-cli": "^11.0.1"
+  }
+}

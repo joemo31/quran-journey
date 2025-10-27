@@ -1,0 +1,10 @@
+# Force HTTPS and non-www (canonical)
+RewriteEngine On
+
+# If not HTTPS OR using www, redirect to https://quranjourney.academy/
+RewriteCond %{HTTPS} !=on [OR]
+RewriteCond %{HTTP_HOST} ^www\.quranjourney\.academy$ [NC]
+RewriteRule ^(.*)$ https://quranjourney.academy/$1 [R=301,L]
+
+# Optional: ensure correct MIME for MP4 (usually already set on server)
+AddType video/mp4 .mp4
