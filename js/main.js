@@ -274,9 +274,10 @@ function initAnimations() {
 
 // Initialize the page
 function init() {
-    renderCourses();
-    renderTeachers();
-    renderTestimonials();
+    // Rendering is handled statically in index.html; disable JS render to avoid duplication/overwrites
+    // renderCourses();
+    // renderTeachers();
+    // renderTestimonials();
     initAnimations();
     
     // Add scrolled class to navbar on page load if scrolled

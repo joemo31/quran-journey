@@ -1357,8 +1357,8 @@ transition: transform 0.5s ease;
     top: 0;
     left: 0;
     right: 0;
-    height: 300px;
-    background: linear-gradient(to bottom, #fff 0%, rgba(255, 255, 255, 0) 100%);
+    height: 0; /* removed overlay height to match dark background */
+    background: none; /* remove white gradient overlay */
     z-index: 1;
 }
 
