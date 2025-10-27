@@ -1,0 +1,512 @@
+/* Responsive Styles for Quran Journey */
+
+/* X-Small devices (portrait phones, less than 576px) */
+@media (max-width: 575.98px) {
+    /* Ensure mobile menu is properly positioned and styled */
+    .menu-toggle {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 4px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        z-index: 1001;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: white;
+        padding: 80px 20px 30px;
+        box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        overflow-y: auto;
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-links li {
+        margin: 0;
+        width: 100%;
+        text-align: right;
+    }
+    
+    .nav-links a {
+        display: block;
+        padding: 12px 0;
+        font-size: 1.1rem;
+        color: var(--dark-color) !important;
+        border-bottom: 1px solid #f0f0f0;
+    }
+    
+    .nav-links .btn {
+        margin-top: 20px;
+        width: 100%;
+        text-align: center;
+    }
+    :root {
+        --section-padding: 50px 0;
+        --container-padding: 0 15px;
+        --font-size-base: 0.9375rem; /* 15px */
+    }
+
+    /* Adjust section headers */
+    .section-header h2 {
+        font-size: 1.75rem !important;
+        margin-bottom: 1rem !important;
+    }
+
+    .section-header p {
+        font-size: 1rem !important;
+    }
+
+    /* Adjust navigation */
+    .navbar {
+        padding: 10px 0;
+        position: relative;
+        z-index: 1000;
+    }
+
+    .navbar .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 15px;
+    }
+
+    .navbar-brand img {
+        max-height: 40px;
+    }
+
+    /* Adjust hero section */
+    .hero {
+        padding: 80px 0 40px;
+        text-align: center;
+    }
+    
+    .hero h1 {
+        font-size: 2rem !important;
+        margin-bottom: 1rem;
+        line-height: 1.3;
+    }
+
+    .hero p {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        padding: 0 15px;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .hero-buttons .btn {
+        width: 100%;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+
+    /* Adjust cards */
+    .card {
+        margin-bottom: 1.5rem;
+        padding: 20px 15px;
+    }
+    
+    /* Improve form elements */
+    .form-control, 
+    .form-select,
+    .form-textarea {
+        font-size: 16px !important;
+        padding: 12px 15px;
+    }
+    
+    /* Adjust section padding */
+    section {
+        padding: 40px 0 !important;
+    }
+    
+    /* Improve navigation */
+    .navbar-collapse {
+        background: white;
+        padding: 15px;
+        margin-top: 10px;
+        border-radius: 8px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .nav-link {
+        padding: 10px 0;
+        border-bottom: 1px solid #f5f5f5;
+    }
+    
+    /* Improve buttons */
+    .btn {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+    
+    /* Adjust testimonial cards */
+    .testimonial-card {
+        padding: 20px 15px;
+    }
+    
+    .testimonial-text {
+        font-size: 0.95rem;
+    }
+    
+    /* Teacher cards */
+    .teacher-card {
+        margin-bottom: 2rem;
+    }
+    
+    .teacher-info h3 {
+        font-size: 1.2rem;
+    }
+    
+    /* Footer adjustments */
+    .footer-content {
+        text-align: center;
+    }
+    
+    .footer-links,
+    .footer-contact {
+        margin-bottom: 2rem;
+    }
+    
+    /* Ensure menu toggle is visible */
+    .menu-toggle {
+        display: flex !important;
+    }
+    
+    /* Hide desktop navigation */
+    .nav-links {
+        display: none;
+    }
+    
+    /* About Section - Mobile */
+    .about {
+        padding: 60px 0 !important;
+    }
+    
+    .about-content {
+        grid-template-columns: 1fr !important;
+        gap: 30px !important;
+    }
+    
+    .about-text {
+        text-align: center;
+        padding: 0 10px;
+    }
+    
+    .about .section-header h2 {
+        font-size: 1.8rem !important;
+        margin-bottom: 15px !important;
+    }
+    
+    .about .section-header p {
+        font-size: 1rem !important;
+    }
+    
+    .about-text .lead {
+        font-size: 1rem !important;
+        margin-bottom: 25px !important;
+        line-height: 1.7;
+        color: var(--text-color) !important;
+    }
+    
+    .about-features {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+        margin: 20px 0 0 !important;
+    }
+    
+    .about-features .feature {
+        background: #fff !important;
+        border: 1px solid #eee !important;
+        text-align: left;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+    
+    .about-features .feature i {
+        width: 50px !important;
+        height: 50px !important;
+        font-size: 1.4rem !important;
+        line-height: 50px !important;
+        margin: 0 15px 0 0 !important;
+        background: rgba(30, 50, 90, 0.1) !important;
+        color: var(--primary-color) !important;
+        float: left;
+    }
+    
+    .about-features .feature h3 {
+        font-size: 1.2rem !important;
+        margin-bottom: 5px;
+        color: var(--dark-color) !important;
+    }
+    
+    .about-features .feature p {
+        font-size: 0.9rem !important;
+        margin: 0;
+        color: var(--text-light) !important;
+    }
+    
+    .about-image {
+        order: -1;
+        max-width: 100%;
+        margin: 0 auto;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* Show mobile menu when active */
+    .nav-links.active {
+        display: block;
+    }
+    
+    /* Hide back to top on very small screens */
+    .back-to-top {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 1.1rem !important;
+        bottom: 20px !important;
+        left: 20px !important;
+    }
+
+    /* Adjust buttons */
+    .btn {
+        padding: 0.5rem 1.25rem;
+        font-size: 0.9375rem;
+    }
+
+    /* Adjust form elements */
+    .form-control {
+        padding: 0.625rem 1rem;
+        font-size: 0.9375rem;
+    }
+
+    /* Adjust section spacing */
+    section {
+        padding: 50px 0 !important;
+    }
+
+    /* Adjust grid layouts */
+    .row {
+        margin: 0 -10px;
+    }
+
+    [class*="col-"] {
+        padding: 0 10px;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    :root {
+        --section-padding: 60px 0;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0 20px;
+    }
+    
+    .hero h1 {
+        font-size: 2.5rem !important;
+    }
+    
+    .hero p {
+        font-size: 1.2rem;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .card {
+        margin-bottom: 1.5rem;
+    }
+    
+    .teacher-card {
+        margin-bottom: 2rem;
+    }
+    :root {
+        --section-padding: 60px 0;
+    }
+
+    .section-header h2 {
+        font-size: 2rem !important;
+    }
+
+    .hero h1 {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    :root {
+        --section-padding: 70px 0;
+    }
+    
+    .container {
+        max-width: 100%;
+        padding: 0 25px;
+    }
+    
+    .hero h1 {
+        font-size: 2.8rem !important;
+    }
+    
+    .hero p {
+        font-size: 1.25rem;
+    }
+    
+    /* Adjust grid layouts for tablets */
+    .features-grid,
+    .courses-grid,
+    .teachers-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    /* Adjust testimonial layout */
+    .testimonial-slide {
+        padding: 30px;
+    }
+    :root {
+        --section-padding: 70px 0;
+    }
+
+    .section-header h2 {
+        font-size: 2.25rem !important;
+    }
+
+    .hero h1 {
+        font-size: 2.75rem !important;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .container {
+        max-width: 960px;
+    }
+    
+    /* Adjust grid layouts for smaller desktops */
+    .features-grid,
+    .courses-grid,
+    .teachers-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+    }
+    :root {
+        --section-padding: 80px 0;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* X-Large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+    
+    /* Ensure proper spacing on large screens */
+    section {
+        padding: 80px 0;
+    }
+    :root {
+        --section-padding: 100px 0;
+    }
+}
+
+/* XX-Large devices (larger desktops, 1400px and up) */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+}
+
+/* Special cases for specific elements */
+@media (max-width: 767.98px) {
+    /* Stack elements vertically on mobile */
+    .d-md-stack {
+        flex-direction: column !important;
+    }
+
+    /* Center align text on mobile */
+    .text-center-mobile {
+        text-align: center !important;
+    }
+
+    /* Adjust padding for mobile */
+    .px-mobile-3 {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
+    }
+
+    /* Hide elements on mobile */
+    .d-none-mobile {
+        display: none !important;
+    }
+}
+
+/* Fix for iOS viewport height */
+@supports (-webkit-touch-callout: none) {
+    .full-height-ios {
+        height: -webkit-fill-available;
+        min-height: -webkit-fill-available;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+
+    body {
+        color: #000;
+        background: #fff;
+        font-size: 12pt;
+        line-height: 1.5;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 100%;
+        padding: 0;
+    }
+
+    a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        font-weight: normal;
+    }
+
+    .btn,
+    .nav,
+    .no-print {
+        display: none !important;
+    }
+}
