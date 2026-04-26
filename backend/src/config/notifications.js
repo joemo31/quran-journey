@@ -72,7 +72,6 @@ const sendTelegram = async (message) => {
   const res = await httpPost(url, {
     chat_id:    chatId,
     text:       message,
-    parse_mode: 'Markdown',
   });
 
   if (res.status === 200) {

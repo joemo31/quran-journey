@@ -118,7 +118,11 @@ Submitted:       ${new Date().toLocaleString()}
           <p style="color:#cce4ff;margin:0;font-size:13px">Quran Journey Academy — Lead Notification</p>
         </div>
       </div>`;
-    await sendViaSMTP({ to: adminEmail, subject: `New Lead: ${submission.name}`, html });
+    const smtpResult = await sendViaSMTP({ to: adminEmail, subject: `New Lead: ${submission.name}`, html });
+    if (smtpResult.success) {
+      console.log('[Email] Sent via SMTP fallback');
+      return smtpResult;
+    }
   }
 
   return emailJSResult;

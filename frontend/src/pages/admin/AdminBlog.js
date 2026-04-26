@@ -31,7 +31,7 @@ export default function AdminBlog() {
     setForm({
       title: row.title, content: row.content||'', excerpt: row.excerpt||'',
       image_url: row.image_url||'', video_url: row.video_url||'', youtube_url: row.youtube_url||'',
-      media_type: row.media_type||'image', is_published: row.is_published,
+      media_type: row.youtube_url ? 'youtube' : (row.media_type||'image'), is_published: row.is_published,
       author_name: row.author_name||'', tags: row.tags?.join(',')||''
     });
     setPreview(false);
@@ -40,7 +40,14 @@ export default function AdminBlog() {
 
   const handleSubmit = async e => {
     e.preventDefault();
-    const payload = { ...form, tags: form.tags ? form.tags.split(',').map(t=>t.trim()).filter(Boolean) : [] };
+    const payload = {
+      ...form,
+      media_type: form.media_type === 'youtube' ? 'video' : form.media_type,
+      image_url: form.media_type === 'image' ? form.image_url : '',
+      video_url: form.media_type === 'video' ? form.video_url : '',
+      youtube_url: form.media_type === 'youtube' ? form.youtube_url : '',
+      tags: form.tags ? form.tags.split(',').map(t=>t.trim()).filter(Boolean) : [],
+    };
     await execute(
       () => modal.mode==='create' ? blogAPI.create(payload) : blogAPI.update(modal.data.id, payload),
       { successMsg: modal.mode==='create'?'Post created!':'Post updated!', onSuccess: () => { setModal(m=>({...m,open:false})); fetch(); } }

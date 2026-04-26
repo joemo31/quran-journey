@@ -1,5 +1,13 @@
 const { query } = require('../config/database');
 
+const normalizeMediaType = (mediaType, youtubeUrl) => {
+  if (mediaType === 'youtube' || youtubeUrl) {
+    return 'video';
+  }
+
+  return mediaType || 'image';
+};
+
 const getAllPosts = async (req, res, next) => {
   try {
     const { is_published, page = 1, limit = 10 } = req.query;
@@ -30,11 +38,12 @@ const getPostBySlug = async (req, res, next) => {
 const createPost = async (req, res, next) => {
   try {
     const { title, content, excerpt, image_url, video_url, youtube_url, media_type='image', is_published=false, author_name, tags } = req.body;
+    const normalizedMediaType = normalizeMediaType(media_type, youtube_url);
     const slug = title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'') + '-' + Date.now();
     const result = await query(
       `INSERT INTO blog_posts (title,slug,content,excerpt,image_url,video_url,youtube_url,media_type,is_published,author_name,tags,created_at)
        VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,NOW()) RETURNING *`,
-      [title, slug, content, excerpt, image_url, video_url, youtube_url||null, media_type, is_published, author_name, tags]
+      [title, slug, content, excerpt, image_url, video_url, youtube_url||null, normalizedMediaType, is_published, author_name, tags]
     );
     res.status(201).json({ success:true, data:result.rows[0] });
   } catch(e){ next(e); }
@@ -43,13 +52,14 @@ const createPost = async (req, res, next) => {
 const updatePost = async (req, res, next) => {
   try {
     const { title, content, excerpt, image_url, video_url, youtube_url, media_type, is_published, author_name, tags } = req.body;
+    const normalizedMediaType = normalizeMediaType(media_type, youtube_url);
     const result = await query(
       `UPDATE blog_posts SET title=COALESCE($1,title), content=COALESCE($2,content),
        excerpt=COALESCE($3,excerpt), image_url=COALESCE($4,image_url), video_url=COALESCE($5,video_url),
        youtube_url=COALESCE($6,youtube_url), media_type=COALESCE($7,media_type),
        is_published=COALESCE($8,is_published), author_name=COALESCE($9,author_name),
        tags=COALESCE($10,tags), updated_at=NOW() WHERE id=$11 RETURNING *`,
-      [title,content,excerpt,image_url,video_url,youtube_url||null,media_type,is_published,author_name,tags,req.params.id]
+      [title,content,excerpt,image_url,video_url,youtube_url||null,normalizedMediaType,is_published,author_name,tags,req.params.id]
     );
     if (!result.rows.length) return res.status(404).json({ success:false, message:'Post not found.' });
     res.json({ success:true, data:result.rows[0] });

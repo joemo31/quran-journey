@@ -22,14 +22,22 @@ const create = async (req, res, next) => {
     const submission = { name, email, phone, country, message, course_interest };
 
     // Send instant notification (Telegram or WhatsApp) — non-blocking
-    sendEnrollmentNotification(submission).catch(err =>
-      console.error('[Notification] Error:', err.message)
-    );
+    sendEnrollmentNotification(submission)
+      .then((result) => {
+        if (!result?.success) {
+          console.error('[Notification] Delivery failed:', result?.reason || result?.error || 'unknown_error');
+        }
+      })
+      .catch(err => console.error('[Notification] Error:', err.message));
 
     // Send email — non-blocking
-    sendFormSubmissionNotification(submission).catch(err =>
-      console.error('[Email] Error:', err.message)
-    );
+    sendFormSubmissionNotification(submission)
+      .then((result) => {
+        if (!result?.success) {
+          console.error('[Email] Delivery failed:', result?.error || 'unknown_error');
+        }
+      })
+      .catch(err => console.error('[Email] Error:', err.message));
 
     res.status(201).json({
       success: true,
