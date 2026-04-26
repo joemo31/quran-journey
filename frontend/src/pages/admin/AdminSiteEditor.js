@@ -3,6 +3,7 @@ import { siteContentAPI, mediaAPI } from '../../services/api';
 import { useSiteContent } from '../../context/SiteContentContext';
 import { useApi } from '../../hooks/useApi';
 import toast from 'react-hot-toast';
+import { mediaUrl } from '../../utils/config';
 
 const PAGES = [
   { key: 'global',   label: '🌐 Global', desc: 'Logo, contact info, footer — applies to ALL pages' },
@@ -92,8 +93,7 @@ export default function AdminSiteEditor() {
   };
 
   const pickMedia = (file) => {
-    const base = BASE_URL;
-    const url = `${base}${file.file_url}`;
+    const url = mediaUrl(file.file_url);
     handleChange(mediaPicker.rowId, url);
     setMediaPicker({ open: false, rowId: null });
     toast.success('Image selected!');
@@ -183,7 +183,7 @@ export default function AdminSiteEditor() {
                         </div>
                         {edits[row.id] && (
                           <div className="flex items-start gap-3">
-                            <img src={edits[row.id]} alt="preview"
+                            <img src={mediaUrl(edits[row.id])} alt="preview"
                               className="h-20 w-auto max-w-xs rounded-lg object-cover border border-gray-200"
                               onError={e => { e.target.style.display='none'; }}
                             />
@@ -273,8 +273,7 @@ export default function AdminSiteEditor() {
               ) : (
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                   {mediaList.map(file => {
-                    const base = process.env.REACT_APP_API_URL?.replace('/api','') || 'http://localhost:5000';
-                    const url = `${base}${file.file_url}`;
+                    const url = mediaUrl(file.file_url);
                     return (
                       <button key={file.id} onClick={() => pickMedia(file)}
                         className="aspect-square rounded-xl overflow-hidden border-2 border-transparent hover:border-primary transition-all group relative bg-gray-100">

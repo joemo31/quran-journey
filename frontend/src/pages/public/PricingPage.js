@@ -3,6 +3,7 @@ import { coursesAPI } from '../../services/api';
 import { useSiteContent } from '../../context/SiteContentContext';
 import ContactForm from '../../components/common/ContactForm';
 import EnrollButton from '../../components/common/EnrollButton';
+import { backgroundImageStyle } from '../../utils/config';
 
 const INCLUDED = ['Live 1-on-1 sessions','Native Arabic teacher','Flexible scheduling','Progress tracking','Recorded session replays','WhatsApp teacher access'];
 const HIGHLIGHTS = [
@@ -16,7 +17,6 @@ export default function PricingPage() {
   const { get } = useSiteContent();
   const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCourse, setSelectedCourse] = useState('');
 
   const heroTitle    = get('pricing','hero','title',    'Simple, Honest Pricing');
   const heroSub      = get('pricing','hero','subtitle', 'All plans include live 1-on-1 sessions. Start with a free trial — no card required.');
@@ -37,7 +37,7 @@ export default function PricingPage() {
     <div className="pt-24">
       {/* Hero */}
       <section className="bg-primary py-20 relative"
-        style={heroBg ? { backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' } : {}}>
+        style={backgroundImageStyle(heroBg)}>
         {heroBg && <div className="absolute inset-0 bg-primary/90"/>}
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <span className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-sm font-medium px-4 py-2 rounded-full mb-6">💎 Transparent Pricing — No Hidden Fees</span>
@@ -156,7 +156,7 @@ export default function PricingPage() {
             <p className="text-secondary/70">{ctaSub}</p>
           </div>
           <div className="card shadow-card-hover">
-            <ContactForm title="" subtitle="" preselectedCourse={selectedCourse}/>
+            <ContactForm title="" subtitle=""/>
           </div>
         </div>
       </section>

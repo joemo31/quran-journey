@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { testimonialsAPI } from '../../services/api';
 import { useSiteContent } from '../../context/SiteContentContext';
 import ContactForm from '../../components/common/ContactForm';
+import { backgroundImageStyle, mediaUrl } from '../../utils/config';
 
 const StarRating = ({ rating=5 }) => (
   <div className="flex gap-0.5">{[1,2,3,4,5].map(s=><span key={s} className={`text-lg ${s<=rating?'text-yellow-400':'text-gray-200'}`}>★</span>)}</div>
 );
 
 export default function FeedbackPage() {
-  const { get, globals } = useSiteContent();
+  const { get } = useSiteContent();
   const [testimonials, setTestimonials] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -35,7 +36,7 @@ export default function FeedbackPage() {
     <div className="pt-24">
       {/* Hero */}
       <section className="bg-primary py-20 relative overflow-hidden"
-        style={heroBg ? { backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' } : {}}>
+        style={backgroundImageStyle(heroBg)}>
         {heroBg && <div className="absolute inset-0 bg-primary/90"/>}
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-sm font-medium px-4 py-2 rounded-full mb-6">⭐ Real Stories from Real Students</div>
@@ -62,12 +63,12 @@ export default function FeedbackPage() {
               {videos.map(t => (
                 <div key={t.id} className="card overflow-hidden p-0">
                   <div className="aspect-video bg-gray-900">
-                    <video src={t.video_url} controls className="w-full h-full object-cover"/>
+                    <video src={mediaUrl(t.video_url)} controls className="w-full h-full object-cover"/>
                   </div>
                   <div className="p-4">
                     <div className="flex items-center gap-3 mb-2">
                       {t.student_avatar_url
-                        ? <img src={t.student_avatar_url} alt={t.student_name} className="w-10 h-10 rounded-full object-cover"/>
+                        ? <img src={mediaUrl(t.student_avatar_url)} alt={t.student_name} className="w-10 h-10 rounded-full object-cover"/>
                         : <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-white font-bold">{t.student_name?.charAt(0)}</div>
                       }
                       <div>
@@ -99,7 +100,7 @@ export default function FeedbackPage() {
                   <p className="text-secondary/80 leading-relaxed mt-3 mb-5 relative z-10">{t.content}</p>
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                     {t.student_avatar_url
-                      ? <img src={t.student_avatar_url} alt={t.student_name} className="w-11 h-11 rounded-full object-cover"/>
+                      ? <img src={mediaUrl(t.student_avatar_url)} alt={t.student_name} className="w-11 h-11 rounded-full object-cover"/>
                       : <div className="w-11 h-11 rounded-full bg-primary-50 border-2 border-primary flex items-center justify-center text-primary font-bold">{t.student_name?.charAt(0)}</div>
                     }
                     <div>

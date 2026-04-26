@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { mediaAPI } from '../../services/api';
 import toast from 'react-hot-toast';
+import { mediaUrl } from '../../utils/config';
 
 function bytesToSize(bytes) {
   if (!bytes) return '0 B';
@@ -65,7 +66,6 @@ async function extractDroppedItems(dataTransfer) {
 }
 
 const ACCEPTED_MIME = ['image/jpeg','image/png','image/webp','image/gif','image/svg+xml','video/mp4','video/webm','video/quicktime','application/pdf'];
-import { BASE_URL } from '../../utils/config';
 
 export default function AdminMediaLibrary() {
   const [files,        setFiles]        = useState([]);
@@ -218,7 +218,7 @@ export default function AdminMediaLibrary() {
   };
 
   const copyUrl = (fileUrl) => {
-    navigator.clipboard.writeText(`${BASE_URL}${fileUrl}`)
+    navigator.clipboard.writeText(mediaUrl(fileUrl))
       .then(() => toast.success('URL copied to clipboard!'))
       .catch(() => toast.error('Copy failed.'));
   };
@@ -384,7 +384,7 @@ export default function AdminMediaLibrary() {
                   className={`relative rounded-xl overflow-hidden cursor-pointer border-2 transition-all group aspect-square
                     ${selected?.id===file.id ? 'border-primary shadow-lg scale-[1.02]' : 'border-transparent hover:border-primary/50 hover:shadow-md'}`}>
                   {isImage(file) ? (
-                    <img src={`${BASE_URL}${file.file_url}`} alt={file.alt_text || file.original_name}
+                    <img src={mediaUrl(file.file_url)} alt={file.alt_text || file.original_name}
                       className="w-full h-full object-cover"/>
                   ) : isVideo(file) ? (
                     <div className="w-full h-full bg-gray-900 flex flex-col items-center justify-center gap-2">
@@ -422,10 +422,10 @@ export default function AdminMediaLibrary() {
               {/* Preview */}
               <div className="rounded-xl overflow-hidden bg-gray-100 aspect-video flex items-center justify-center">
                 {isImage(selected) ? (
-                  <img src={`${BASE_URL}${selected.file_url}`} alt={selected.original_name}
+                  <img src={mediaUrl(selected.file_url)} alt={selected.original_name}
                     className="max-w-full max-h-full object-contain"/>
                 ) : isVideo(selected) ? (
-                  <video src={`${BASE_URL}${selected.file_url}`} controls className="max-w-full max-h-full"/>
+                  <video src={mediaUrl(selected.file_url)} controls className="max-w-full max-h-full"/>
                 ) : (
                   <span className="text-6xl">📄</span>
                 )}
@@ -447,7 +447,7 @@ export default function AdminMediaLibrary() {
                 <label className="label text-xs mb-1">File URL</label>
                 <div className="flex gap-1.5">
                   <input readOnly className="input text-xs py-1.5 flex-1 bg-gray-50 font-mono"
-                    value={`${BASE_URL}${selected.file_url}`}/>
+                    value={mediaUrl(selected.file_url)}/>
                   <button onClick={() => copyUrl(selected.file_url)}
                     className="btn-secondary text-xs py-1.5 px-2.5 whitespace-nowrap">Copy</button>
                 </div>

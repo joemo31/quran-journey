@@ -1,76 +1,101 @@
 /**
- * Pre-deployment readiness checker
+ * Deployment readiness checker
  * Run with: node check-ready.js
  */
-const fs   = require('fs');
-const path = require('path');
+const fs = require('fs');
 
 const checks = [];
-const OK  = '✅';
-const ERR = '❌';
-const WARN = '⚠️ ';
+const OK = '[OK]';
+const ERR = '[ERR]';
 
-function check(label, condition, fix) {
-  checks.push({ label, ok: condition, fix });
+function addCheck(label, ok, fix) {
+  checks.push({ label, ok, fix });
 }
 
-// ── Backend checks ────────────────────────────────────────────────────────────
-const backendEnv = fs.existsSync('backend/.env');
-check('Backend .env file exists',           backendEnv,      'Copy backend/.env.example to backend/.env and fill in values');
+function fileExists(filePath) {
+  return fs.existsSync(filePath);
+}
+
+function readFileSafe(filePath) {
+  return fileExists(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
+}
+
+function envValue(envText, key) {
+  const match = envText.match(new RegExp(`^${key}=(.*)$`, 'm'));
+  return match ? match[1].trim() : '';
+}
+
+const backendEnvPath = fileExists('backend/.env') ? 'backend/.env' : 'backend/.env.production';
+const frontendEnvProdPath = 'frontend/.env.production';
+const backendEnv = readFileSafe(backendEnvPath);
+const frontendEnv = readFileSafe(frontendEnvProdPath);
+const usingBackendTemplate = backendEnvPath.endsWith('.env.production');
+
+addCheck(
+  'Backend environment file or template exists',
+  fileExists(backendEnvPath),
+  'Keep backend/.env.example or backend/.env.production up to date, then set the real values in Fly secrets.'
+);
 
 if (backendEnv) {
-  const env = fs.readFileSync('backend/.env', 'utf8');
-  check('JWT_SECRET is set',               env.includes('JWT_SECRET=') && !env.includes('JWT_SECRET=your_'),
-        'Set JWT_SECRET to a random 32+ char string in backend/.env');
-  check('DB_PASSWORD or DATABASE_URL set', env.includes('DATABASE_URL=') || env.includes('DB_PASSWORD='),
-        'Set DB_PASSWORD or DATABASE_URL in backend/.env');
-  check('ADMIN_EMAIL set',                 env.includes('ADMIN_EMAIL='),
-        'Set ADMIN_EMAIL=quranjourney026@gmail.com in backend/.env');
-  check('EmailJS configured',              env.includes('EMAILJS_SERVICE_ID=service_'),
-        'Set up EmailJS at emailjs.com and add EMAILJS_* vars to backend/.env');
-  check('FRONTEND_URL set',                env.includes('FRONTEND_URL='),
-        'Set FRONTEND_URL to your frontend domain in backend/.env');
+  const jwtSecret = envValue(backendEnv, 'JWT_SECRET');
+  const databaseUrl = envValue(backendEnv, 'DATABASE_URL');
+  const dbPassword = envValue(backendEnv, 'DB_PASSWORD');
+  const frontendUrl = envValue(backendEnv, 'FRONTEND_URL');
+  const frontendUrls = envValue(backendEnv, 'FRONTEND_URLS');
+  const supabaseUrl = envValue(backendEnv, 'SUPABASE_URL');
+  const supabaseServiceRoleKey = envValue(backendEnv, 'SUPABASE_SERVICE_ROLE_KEY');
+  const supabaseStorageBucket = envValue(backendEnv, 'SUPABASE_STORAGE_BUCKET');
+
+  addCheck(
+    'JWT_SECRET is configured',
+    usingBackendTemplate ? Boolean(jwtSecret) : (jwtSecret && !jwtSecret.includes('replace_with')),
+    'Set JWT_SECRET to a long random secret.'
+  );
+  addCheck(
+    'Database connection is configured',
+    Boolean(databaseUrl || dbPassword),
+    'Set DATABASE_URL or the DB_* values in Fly secrets or backend/.env.'
+  );
+  addCheck('Frontend origin is configured', Boolean(frontendUrl || frontendUrls), 'Set FRONTEND_URL or FRONTEND_URLS to your live frontend domain.');
+  addCheck('Admin email is configured', Boolean(envValue(backendEnv, 'ADMIN_EMAIL')), 'Set ADMIN_EMAIL in backend/.env.');
+
+  const storageConfigured = supabaseUrl && supabaseServiceRoleKey && supabaseStorageBucket;
+  addCheck(
+    'Persistent media storage is configured',
+    Boolean(storageConfigured),
+    'Set SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, and SUPABASE_STORAGE_BUCKET for persistent uploads.'
+  );
 }
 
-// ── Frontend checks ───────────────────────────────────────────────────────────
-const frontendEnvProd = fs.existsSync('frontend/.env.production');
-check('Frontend .env.production exists',   frontendEnvProd, 'Create frontend/.env.production with REACT_APP_API_URL');
+addCheck('Frontend .env.production exists', fileExists(frontendEnvProdPath), 'Create frontend/.env.production with REACT_APP_API_URL.');
 
-if (frontendEnvProd) {
-  const env = fs.readFileSync('frontend/.env.production', 'utf8');
-  check('REACT_APP_API_URL set',           env.includes('REACT_APP_API_URL=https://'),
-        'Set REACT_APP_API_URL to your deployed backend URL (https://...)');
+if (frontendEnv) {
+  const apiUrl = envValue(frontendEnv, 'REACT_APP_API_URL');
+  addCheck('Frontend API URL is set', apiUrl.startsWith('https://'), 'Set REACT_APP_API_URL to your Fly.io API URL.');
 }
 
-// ── File structure ────────────────────────────────────────────────────────────
-check('Backend index.js exists',           fs.existsSync('backend/src/index.js'),    'Missing backend/src/index.js');
-check('Backend migrations exist',          fs.existsSync('backend/migrations/001_initial_schema.sql'), 'Missing migration files');
-check('Frontend src exists',               fs.existsSync('frontend/src/App.js'),     'Missing frontend/src/App.js');
-check('Uploads directory exists',          fs.existsSync('backend/uploads'),         'Run: mkdir -p backend/uploads');
-
-// ── Node modules check ────────────────────────────────────────────────────────
-check('Backend node_modules installed',    fs.existsSync('backend/node_modules'),    'Run: cd backend && npm install');
-check('Frontend node_modules installed',   fs.existsSync('frontend/node_modules'),   'Run: cd frontend && npm install');
-
-// ── Print results ─────────────────────────────────────────────────────────────
-console.log('\n════════════════════════════════════════════');
-console.log('  Quran Journey LMS — Deployment Readiness');
-console.log('════════════════════════════════════════════\n');
+addCheck('Hostinger rewrite file exists', fileExists('frontend/public/.htaccess'), 'Create frontend/public/.htaccess for React route rewrites.');
+addCheck('Backend entry file exists', fileExists('backend/src/index.js'), 'Missing backend/src/index.js.');
+addCheck('Frontend entry file exists', fileExists('frontend/src/App.js'), 'Missing frontend/src/App.js.');
+addCheck('Database migrations exist', fileExists('backend/migrations/001_initial_schema.sql'), 'Missing backend migration files.');
+addCheck('Backend dependencies are installed', fileExists('backend/node_modules'), 'Run `cd backend && npm install`.');
+addCheck('Frontend dependencies are installed', fileExists('frontend/node_modules'), 'Run `cd frontend && npm install`.');
 
 let allOk = true;
-for (const c of checks) {
-  if (c.ok) {
-    console.log(`${OK}  ${c.label}`);
-  } else {
-    allOk = false;
-    console.log(`${ERR}  ${c.label}`);
-    console.log(`     → ${c.fix}`);
+
+console.log('\nQuran Journey LMS Deployment Readiness\n');
+for (const check of checks) {
+  if (check.ok) {
+    console.log(`${OK} ${check.label}`);
+    continue;
   }
+
+  allOk = false;
+  console.log(`${ERR} ${check.label}`);
+  console.log(`      -> ${check.fix}`);
 }
 
-console.log('\n────────────────────────────────────────────');
-if (allOk) {
-  console.log(`${OK}  All checks passed! Ready to deploy.\n`);
-} else {
-  console.log(`${ERR}  Fix the errors above before deploying.\n`);
-}
+console.log('');
+console.log(allOk ? `${OK} Ready for deployment.` : `${ERR} Fix the items above before deploying.`);
+console.log('');

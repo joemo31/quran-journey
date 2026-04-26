@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { useSiteContent } from '../../context/SiteContentContext';
+import { mediaUrl } from '../../utils/config';
 
 const NAV_LINKS = [
   { label: 'Home',     path: '/' },
@@ -21,6 +22,7 @@ export default function PublicLayout({ children }) {
   const { globals } = useSiteContent();   // ← live from DB, updates when admin changes
 
   const waLink = globals.whatsappLink || `https://wa.me/${(globals.whatsapp || '').replace(/\D/g, '')}`;
+  const logoUrl = mediaUrl(globals.logoUrl);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 20);
@@ -38,8 +40,8 @@ export default function PublicLayout({ children }) {
 
             {/* Logo */}
             <Link to="/" className="flex items-center gap-3 flex-shrink-0">
-              {globals.logoUrl
-                ? <img src={globals.logoUrl} alt={globals.logoText} className="h-10 w-auto object-contain"/>
+              {logoUrl
+                ? <img src={logoUrl} alt={globals.logoText} className="h-10 w-auto object-contain"/>
                 : <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center text-white text-xl font-display font-bold">ق</div>
               }
               <div>
@@ -126,8 +128,8 @@ export default function PublicLayout({ children }) {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-4">
-                {globals.logoUrl
-                  ? <img src={globals.logoUrl} alt={globals.logoText} className="h-10 w-auto object-contain"/>
+                {logoUrl
+                  ? <img src={logoUrl} alt={globals.logoText} className="h-10 w-auto object-contain"/>
                   : <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-white text-xl font-display font-bold">ق</div>
                 }
                 <div>

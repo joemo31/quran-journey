@@ -4,18 +4,21 @@ const path = require('path');
 const fs = require('fs');
 const { authenticate, authorize } = require('../middleware/auth');
 const { upload, getAll, getFolders, updateAlt, remove } = require('../controllers/mediaController');
+const { normalizeFolder } = require('../config/storage');
 const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folder = req.body.folder || 'general';
-    const dir = path.join(__dirname, '../../uploads', folder);
+    const folder = normalizeFolder(req.body.folder);
+    req.body.folder = folder;
+    const dir = path.join(__dirname, '../../uploads', ...folder.split('/'));
     fs.mkdirSync(dir, { recursive: true });
     cb(null, dir);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    const name = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    const rawName = path.basename(file.originalname, ext).replace(/[^a-zA-Z0-9]/g, '-').toLowerCase();
+    const name = rawName.replace(/-+/g, '-').replace(/(^-|-$)/g, '') || 'file';
     cb(null, `${name}-${Date.now()}${ext}`);
   }
 });

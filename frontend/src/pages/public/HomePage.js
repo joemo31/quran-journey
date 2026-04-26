@@ -4,6 +4,7 @@ import ContactForm from '../../components/common/ContactForm';
 import EnrollButton from '../../components/common/EnrollButton';
 import { coursesAPI, testimonialsAPI } from '../../services/api';
 import { useSiteContent } from '../../context/SiteContentContext';
+import { backgroundImageStyle, mediaUrl } from '../../utils/config';
 
 const StarRating = ({ rating=5 }) => (
   <div className="flex gap-0.5">{[1,2,3,4,5].map(s=><span key={s} className={`text-base ${s<=rating?'text-yellow-400':'text-gray-200'}`}>★</span>)}</div>
@@ -60,7 +61,7 @@ export default function HomePage() {
     <div>
       {/* ── HERO ── */}
       <section className="relative min-h-screen bg-primary flex items-center overflow-hidden"
-        style={heroBg?{backgroundImage:`url(${heroBg})`,backgroundSize:'cover',backgroundPosition:'center'}:{}}>
+        style={backgroundImageStyle(heroBg)}>
         <div className="absolute inset-0 bg-primary/90"/>
         <div className="absolute inset-0 pointer-events-none">
           <div className="absolute top-20 right-0 w-[600px] h-[600px] bg-white/5 rounded-full -translate-y-1/4 translate-x-1/4"/>
@@ -93,7 +94,7 @@ export default function HomePage() {
               <div className="relative w-full max-w-md">
                 <div className="rounded-3xl overflow-hidden shadow-2xl border-4 border-white/20">
                   <img
-                    src={heroImage}
+                    src={mediaUrl(heroImage)}
                     alt="Quran Journey Academy"
                     className="w-full h-auto object-cover max-h-[480px]"
                     onError={e => { e.target.style.display='none'; e.target.parentElement.innerHTML='<div class="flex items-center justify-center h-64 text-white/40 text-6xl font-arabic">ق</div>'; }}
@@ -216,7 +217,7 @@ export default function HomePage() {
                   <p className="text-secondary/80 leading-relaxed mt-3 mb-5 relative z-10 line-clamp-4">{t.content}</p>
                   <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
                     {t.student_avatar_url
-                      ? <img src={t.student_avatar_url} alt={t.student_name} className="w-11 h-11 rounded-full object-cover"/>
+                      ? <img src={mediaUrl(t.student_avatar_url)} alt={t.student_name} className="w-11 h-11 rounded-full object-cover"/>
                       : <div className="w-11 h-11 rounded-full bg-primary-50 border-2 border-primary flex items-center justify-center text-primary font-bold">{t.student_name?.charAt(0)}</div>
                     }
                     <div>

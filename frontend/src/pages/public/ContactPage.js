@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from '../../components/common/ContactForm';
 import { useSiteContent } from '../../context/SiteContentContext';
+import { backgroundImageStyle } from '../../utils/config';
 
 export default function ContactPage() {
   const { get, globals } = useSiteContent();
@@ -17,7 +18,7 @@ export default function ContactPage() {
   return (
     <div className="pt-24">
       <section className="bg-primary py-20 relative"
-        style={heroBg ? { backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' } : {}}>
+        style={backgroundImageStyle(heroBg)}>
         {heroBg && <div className="absolute inset-0 bg-primary/90"/>}
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h1 className="font-display text-5xl font-bold text-white mb-4">{heroTitle}</h1>

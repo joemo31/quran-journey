@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { testimonialsAPI } from '../../services/api';
 import Modal from '../../components/common/Modal';
 import { useApi } from '../../hooks/useApi';
-import toast from 'react-hot-toast';
+import { mediaUrl } from '../../utils/config';
 
 const EMPTY = { student_name:'', student_country:'', student_avatar_url:'', content:'', video_url:'', media_type:'text', rating:5, is_published:true, sort_order:0 };
 
@@ -70,7 +70,7 @@ export default function AdminTestimonials() {
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
                   {t.student_avatar_url
-                    ? <img src={t.student_avatar_url} alt={t.student_name} className="w-12 h-12 rounded-full object-cover"/>
+                    ? <img src={mediaUrl(t.student_avatar_url)} alt={t.student_name} className="w-12 h-12 rounded-full object-cover"/>
                     : <div className="w-12 h-12 rounded-full bg-primary-50 border-2 border-primary flex items-center justify-center text-primary font-bold text-lg">{t.student_name?.charAt(0)}</div>
                   }
                   <div>

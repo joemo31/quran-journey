@@ -1,9 +1,7 @@
 import axios from 'axios';
-import toast from 'react-hot-toast';
+import { API_URL } from '../utils/config';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
-
-const api = axios.create({ baseURL: API_BASE, timeout: 30000, headers: { 'Content-Type': 'application/json' } });
+const api = axios.create({ baseURL: API_URL, timeout: 30000, headers: { 'Content-Type': 'application/json' } });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('qja_token');

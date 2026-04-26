@@ -5,6 +5,7 @@ import { useSiteContent } from '../../context/SiteContentContext';
 import ContactForm from '../../components/common/ContactForm';
 import MediaEmbed from '../../components/common/MediaEmbed';
 import { format } from 'date-fns';
+import { backgroundImageStyle } from '../../utils/config';
 
 export default function BlogPage() {
   const { get } = useSiteContent();
@@ -24,7 +25,7 @@ export default function BlogPage() {
   return (
     <div className="pt-24">
       <section className="bg-primary py-20 relative"
-        style={heroBg?{backgroundImage:`url(${heroBg})`,backgroundSize:'cover',backgroundPosition:'center'}:{}}>
+        style={backgroundImageStyle(heroBg)}>
         {heroBg && <div className="absolute inset-0 bg-primary/90"/>}
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h1 className="font-display text-5xl font-bold text-white mb-4">{heroTitle}</h1>

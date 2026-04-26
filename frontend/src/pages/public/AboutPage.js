@@ -1,6 +1,7 @@
 import React from 'react';
 import ContactForm from '../../components/common/ContactForm';
 import { useSiteContent } from '../../context/SiteContentContext';
+import { backgroundImageStyle, mediaUrl } from '../../utils/config';
 
 export default function AboutPage() {
   const { get } = useSiteContent();
@@ -23,7 +24,7 @@ export default function AboutPage() {
     <div className="pt-24">
       {/* Hero */}
       <section className="bg-primary py-20 relative overflow-hidden"
-        style={heroBg ? { backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' } : {}}>
+        style={backgroundImageStyle(heroBg)}>
         <div className="absolute inset-0 bg-primary/90"/>
         <div className="relative max-w-4xl mx-auto px-4 text-center">
           <h1 className="font-display text-5xl font-bold text-white mb-4">{heroTitle}</h1>
@@ -43,7 +44,7 @@ export default function AboutPage() {
             </div>
             <div>
               {missionImg
-                ? <img src={missionImg} alt="Our Mission" className="rounded-2xl w-full object-cover shadow-card-hover"/>
+                ? <img src={mediaUrl(missionImg)} alt="Our Mission" className="rounded-2xl w-full object-cover shadow-card-hover"/>
                 : (
                   <div className="grid grid-cols-2 gap-4">
                     {[

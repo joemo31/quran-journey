@@ -1,20 +1,33 @@
-const path = require('path');
-const fs = require('fs');
 const { query } = require('../config/database');
+const {
+  buildLocalFileUrl,
+  isSupabaseStorageEnabled,
+  normalizeFolder,
+  removeManagedFile,
+  uploadLocalFileToSupabase,
+} = require('../config/storage');
 
 const upload = async (req, res, next) => {
   try {
     if (!req.files || req.files.length === 0) {
       return res.status(400).json({ success: false, message: 'No files uploaded.' });
     }
-    const folder = req.body.folder || 'general';
+    const folder = normalizeFolder(req.body.folder);
     const results = [];
     for (const file of req.files) {
-      const fileUrl = `/uploads/${folder}/${file.filename}`;
+      let filePath = file.path;
+      let fileUrl = buildLocalFileUrl(folder, file.filename);
+
+      if (isSupabaseStorageEnabled()) {
+        const uploaded = await uploadLocalFileToSupabase(file, folder);
+        filePath = uploaded.filePath;
+        fileUrl = uploaded.fileUrl;
+      }
+
       const result = await query(
         `INSERT INTO media_library (filename, original_name, file_path, file_url, mime_type, file_size, folder, uploaded_by, created_at)
          VALUES ($1,$2,$3,$4,$5,$6,$7,$8,NOW()) RETURNING *`,
-        [file.filename, file.originalname, file.path, fileUrl, file.mimetype, file.size, folder, req.user.id]
+        [file.filename, file.originalname, filePath, fileUrl, file.mimetype, file.size, folder, req.user.id]
       );
       results.push(result.rows[0]);
     }
@@ -53,10 +66,9 @@ const updateAlt = async (req, res, next) => {
 
 const remove = async (req, res, next) => {
   try {
-    const result = await query('SELECT file_path FROM media_library WHERE id=$1', [req.params.id]);
+    const result = await query('SELECT file_path, file_url FROM media_library WHERE id=$1', [req.params.id]);
     if (result.rows.length) {
-      const filePath = result.rows[0].file_path;
-      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
+      await removeManagedFile(result.rows[0].file_path, result.rows[0].file_url);
     }
     await query('DELETE FROM media_library WHERE id=$1', [req.params.id]);
     res.json({ success: true, message: 'File deleted.' });

@@ -11,11 +11,60 @@ const { errorHandler, notFound } = require('./middleware/errorHandler');
 
 const app = express();
 
-app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:3000', credentials: true }));
+const parseAllowedOrigins = () => {
+  const rawOrigins = [process.env.FRONTEND_URLS, process.env.FRONTEND_URL]
+    .filter(Boolean)
+    .join(',');
 
-const limiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 300, message: { success: false, message: 'Too many requests.' } });
-const authLimiter = rateLimit({ windowMs: 15 * 60 * 1000, max: 20, message: { success: false, message: 'Too many auth attempts.' } });
+  const configuredOrigins = rawOrigins
+    .split(',')
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+
+  if (configuredOrigins.length > 0) {
+    return [...new Set(configuredOrigins)];
+  }
+
+  return ['http://localhost:3000', 'http://127.0.0.1:3000'];
+};
+
+const allowedOrigins = parseAllowedOrigins();
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error(`Origin ${origin} is not allowed by CORS.`));
+  },
+  credentials: true,
+};
+
+const getClientIp = (req) => {
+  const flyClientIp = req.headers['fly-client-ip'];
+  if (typeof flyClientIp === 'string' && flyClientIp.trim()) {
+    return flyClientIp.trim();
+  }
+
+  return req.ip;
+};
+
+app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  keyGenerator: getClientIp,
+  message: { success: false, message: 'Too many requests.' },
+});
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  keyGenerator: getClientIp,
+  message: { success: false, message: 'Too many auth attempts.' },
+});
 app.use('/api/', limiter);
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
@@ -48,11 +97,11 @@ app.use('/api/media', require('./routes/media'));
 app.use(notFound);
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const PORT = process.env.PORT || 8080;
+
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`\n🚀 Quran Journey LMS API running on port ${PORT}`);
   console.log(`📚 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`🔗 Health: http://localhost:${PORT}/api/health\n`);
 });
-
 module.exports = app;

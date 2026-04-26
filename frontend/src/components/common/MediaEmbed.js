@@ -1,4 +1,5 @@
 import React from 'react';
+import { mediaUrl } from '../../utils/config';
 
 // Extracts YouTube video ID from any YouTube URL format
 function getYouTubeId(url) {
@@ -72,6 +73,8 @@ export default function MediaEmbed({
   // 5. url that looks like an image
   // 6. Fallback
 
+  const resolvedUrl = mediaUrl(url);
+  const resolvedImageUrl = mediaUrl(imageUrl);
   const ytUrl = youtubeUrl || (isYouTubeUrl(url) ? url : null);
   const ytId  = getYouTubeId(ytUrl);
 
@@ -91,7 +94,7 @@ export default function MediaEmbed({
     );
   }
 
-  const imgUrl = imageUrl || (isImageUrl(url) ? url : null);
+  const imgUrl = resolvedImageUrl || (isImageUrl(resolvedUrl) ? resolvedUrl : null);
   if (imgUrl || mediaType === 'image') {
     return (
       <div className={wrapClass}>
@@ -108,7 +111,7 @@ export default function MediaEmbed({
     );
   }
 
-  const vidUrl = isVideoFile(url) ? url : (mediaType === 'video' ? url : null);
+  const vidUrl = isVideoFile(resolvedUrl) ? resolvedUrl : (mediaType === 'video' ? resolvedUrl : null);
   if (vidUrl) {
     return (
       <div className={wrapClass}>

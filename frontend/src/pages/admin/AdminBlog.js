@@ -4,6 +4,7 @@ import Modal from '../../components/common/Modal';
 import MediaEmbed from '../../components/common/MediaEmbed';
 import { useApi } from '../../hooks/useApi';
 import { format } from 'date-fns';
+import { mediaUrl } from '../../utils/config';
 
 const EMPTY = {
   title:'', content:'', excerpt:'', image_url:'', video_url:'', youtube_url:'',
@@ -121,7 +122,7 @@ export default function AdminBlog() {
             <div>
               <label className="label">Image URL</label>
               <input className="input" value={form.image_url} onChange={e=>f({image_url:e.target.value})} placeholder="https://images.unsplash.com/... or any image URL"/>
-              {form.image_url && <img src={form.image_url} alt="preview" className="mt-2 h-24 rounded-lg object-cover border border-gray-200" onError={e=>e.target.style.display='none'}/>}
+                {form.image_url && <img src={mediaUrl(form.image_url)} alt="preview" className="mt-2 h-24 rounded-lg object-cover border border-gray-200" onError={e=>e.target.style.display='none'}/>}
             </div>
           )}
           {form.media_type==='video' && (

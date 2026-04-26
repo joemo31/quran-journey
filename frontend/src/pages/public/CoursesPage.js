@@ -4,6 +4,7 @@ import { coursesAPI } from '../../services/api';
 import { useSiteContent } from '../../context/SiteContentContext';
 import ContactForm from '../../components/common/ContactForm';
 import EnrollButton from '../../components/common/EnrollButton';
+import { backgroundImageStyle } from '../../utils/config';
 
 const LEVEL_COLORS = { 'Beginner':'bg-green-50 text-green-700','Intermediate':'bg-blue-50 text-blue-700','Advanced':'bg-purple-50 text-purple-700','All Levels':'bg-amber-50 text-amber-700' };
 const COURSE_ICONS = ['📖','🎵','📿','🗣️','☪️','📚'];
@@ -39,7 +40,7 @@ export default function CoursesPage() {
   return (
     <div className="pt-24">
       <section className="bg-gray-50 border-b border-gray-100 py-16 relative"
-        style={heroBg ? { backgroundImage:`url(${heroBg})`, backgroundSize:'cover', backgroundPosition:'center' } : {}}>
+        style={backgroundImageStyle(heroBg)}>
         {heroBg && <div className="absolute inset-0 bg-white/80"/>}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
