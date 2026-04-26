@@ -200,22 +200,39 @@ const sendEnrollmentNotification = async (submission) => {
     `🕐 ${time}`,
   ].join('\n');
 
+  const attempts = [];
+
   // Try Telegram first (free, most reliable)
   if (process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID) {
     const result = await sendTelegram(message);
+    attempts.push({ service: 'telegram', ...result });
     if (result.success) return result;
   }
 
   // Try UltraMsg WhatsApp
   if (process.env.ULTRAMSG_INSTANCE && process.env.ULTRAMSG_TOKEN) {
     const result = await sendUltraMsg(message);
+    attempts.push({ service: 'ultramsg', ...result });
     if (result.success) return result;
   }
 
   // Try Whapi WhatsApp
   if (process.env.WHAPI_TOKEN) {
     const result = await sendWhapi(message);
+    attempts.push({ service: 'whapi', ...result });
     if (result.success) return result;
+  }
+
+  if (attempts.length > 0) {
+    console.error(
+      '[Notifications] All configured messaging services failed:',
+      attempts.map(({ service, reason, error }) => ({
+        service,
+        reason: reason || null,
+        error: error || null,
+      }))
+    );
+    return { success: false, reason: 'all_configured_services_failed', attempts };
   }
 
   console.log('[Notifications] No messaging service configured. Set up Telegram or UltraMsg in .env');
