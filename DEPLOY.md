@@ -93,11 +93,13 @@ Then run migrations against the live Supabase database:
 fly ssh console -a quran-journey-backend -C "cd /app && npm run migrate"
 ```
 
-Seed only if this is a brand new database:
+**Do not run `npm run seed` on production** for routine deploys. The seed script skips demo users when `NODE_ENV=production`. Use migrations only:
 
 ```bash
-fly ssh console -a quran-journey-backend -C "cd /app && npm run seed"
+fly ssh console -a quran-journey-backend -C "cd /app && npm run migrate"
 ```
+
+For a **brand-new** database you may seed sample courses/blog locally against a copy, or insert content via the admin dashboard. To create the first admin, register on the site and promote the user in Supabase SQL (see **[SECURITY.md](./SECURITY.md)**).
 
 Check:
 
@@ -184,7 +186,7 @@ REACT_APP_API_URL=https://api.yourdomain.com/api
 6. Use that image in the Site Editor.
 7. Re-open the site and confirm the image still exists after a new Fly deploy.
 8. Confirm emails or notifications are arriving.
-9. Change the seeded admin password immediately if you used seed data.
+9. Confirm no demo accounts from old deployments remain; all admins use strong unique passwords (see **[SECURITY.md](./SECURITY.md)**).
 
 ## Useful commands
 

@@ -103,7 +103,7 @@ A `_migrations` table records applied files. **`npm run migrate` only runs pendi
 ```bash
 cd backend
 npm run migrate    # apply pending SQL only
-npm run seed       # demo data (idempotent)
+npm run seed       # sample content + local-only demo users (idempotent)
 npm run setup      # migrate + seed (first-time local setup)
 ```
 
@@ -183,15 +183,13 @@ cd backend && npm run dev
 cd frontend && npm start
 ```
 
-### Demo accounts (after seed)
+### Local demo accounts (after `npm run setup`)
 
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@quranjourney.academy | Admin@12345 |
-| Teacher | teacher@quranjourney.academy | Teacher@123 |
-| Student | student@quranjourney.academy | Student@123 |
+Demo users are created **only in local development** (`NODE_ENV` ≠ `production`). Passwords are **not** stored in this repository.
 
-Change these passwords before any real deployment.
+1. Run `npm run setup` in `backend/`.
+2. Check the terminal output for emails and passwords (or set `SEED_*_EMAIL` / `SEED_*_PASSWORD` in `.env` — see `backend/.env.example`).
+3. For production, create your own admin and rotate all secrets — see **[SECURITY.md](./SECURITY.md)**.
 
 ---
 
@@ -217,6 +215,8 @@ REACT_APP_API_URL=https://quran-journey-backend.fly.dev/api
 ---
 
 ## Security
+
+See **[SECURITY.md](./SECURITY.md)** for production handoff, credential rotation, and first admin setup.
 
 - JWT with configurable expiry
 - Helmet security headers
