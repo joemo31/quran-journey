@@ -41,7 +41,25 @@ export const AuthProvider = ({ children }) => {
     return u;
   };
 
-  const value = { user, token, login, logout, loading, isAdmin: user?.role === 'admin', isTeacher: user?.role === 'teacher', isStudent: user?.role === 'student' };
+  const refreshUser = useCallback(async () => {
+    const res = await authAPI.getMe();
+    const u = res.data.data;
+    setUser(u);
+    localStorage.setItem('qja_user', JSON.stringify(u));
+    return u;
+  }, []);
+
+  const setUserProfile = useCallback((u) => {
+    setUser(u);
+    localStorage.setItem('qja_user', JSON.stringify(u));
+  }, []);
+
+  const value = {
+    user, token, login, logout, loading, refreshUser, setUserProfile,
+    isAdmin: user?.role === 'admin',
+    isTeacher: user?.role === 'teacher',
+    isStudent: user?.role === 'student',
+  };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

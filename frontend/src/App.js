@@ -32,6 +32,7 @@ import AdminMediaLibrary from './pages/admin/AdminMediaLibrary';
 // Role dashboards
 import StudentDashboard from './pages/student/StudentDashboard';
 import TeacherDashboard from './pages/teacher/TeacherDashboard';
+import AccountSettingsPage from './pages/shared/AccountSettingsPage';
 
 // Layouts
 import DashboardLayout from './components/layout/DashboardLayout';
@@ -86,16 +87,19 @@ function AppRoutes() {
         <Route path="testimonials"element={<AdminTestimonials />} />
         <Route path="site-editor" element={<AdminSiteEditor   />} />
         <Route path="media"       element={<AdminMediaLibrary />} />
+        <Route path="account" element={<AccountSettingsPage />} />
       </Route>
 
       {/* Student */}
       <Route path="/student" element={<ProtectedRoute roles={['student']}><DashboardLayout role="student"/></ProtectedRoute>}>
         <Route index element={<StudentDashboard />} />
+        <Route path="account" element={<AccountSettingsPage />} />
       </Route>
 
       {/* Teacher */}
       <Route path="/teacher" element={<ProtectedRoute roles={['teacher']}><DashboardLayout role="teacher"/></ProtectedRoute>}>
         <Route index element={<TeacherDashboard />} />
+        <Route path="account" element={<AccountSettingsPage />} />
       </Route>
 
       <Route path="*" element={<Navigate to="/" replace />} />

@@ -25,6 +25,7 @@ export const authAPI = {
   login: (d) => api.post('/auth/login', d),
   register: (d) => api.post('/auth/register', d),
   getMe: () => api.get('/auth/me'),
+  updateProfile: (d) => api.put('/auth/profile', d),
   updatePassword: (d) => api.put('/auth/password', d),
   adminResetPassword: (userId, d) => api.put(`/auth/reset/${userId}`, d),
 };

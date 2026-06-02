@@ -66,6 +66,62 @@ const getMe = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name, email, phone, country, currentPassword } = req.body;
+    if (!currentPassword) {
+      return res.status(400).json({ success: false, message: 'Current password is required to save profile changes.' });
+    }
+
+    const existing = await query(
+      'SELECT password_hash, email FROM users WHERE id=$1',
+      [req.user.id]
+    );
+    if (!existing.rows.length) {
+      return res.status(404).json({ success: false, message: 'User not found.' });
+    }
+
+    const isValid = await bcrypt.compare(currentPassword, existing.rows[0].password_hash);
+    if (!isValid) {
+      return res.status(400).json({ success: false, message: 'Current password is incorrect.' });
+    }
+
+    const nextEmail = (email || existing.rows[0].email).toLowerCase().trim();
+    if (nextEmail !== existing.rows[0].email) {
+      const taken = await query(
+        'SELECT id FROM users WHERE email=$1 AND id<>$2',
+        [nextEmail, req.user.id]
+      );
+      if (taken.rows.length) {
+        return res.status(409).json({ success: false, message: 'That email is already in use.' });
+      }
+    }
+
+    const result = await query(
+      `UPDATE users
+       SET name=COALESCE($1,name),
+           email=$2,
+           phone=COALESCE($3,phone),
+           country=COALESCE($4,country),
+           updated_at=NOW()
+       WHERE id=$5
+       RETURNING id,name,email,role,phone,country,created_at`,
+      [
+        name?.trim() || null,
+        nextEmail,
+        phone === '' ? null : phone,
+        country === '' ? null : country,
+        req.user.id,
+      ]
+    );
+
+    const user = result.rows[0];
+    res.json({ success: true, message: 'Profile updated.', data: user });
+  } catch (error) { next(error); }
+};
+
+
+
 const updatePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body;
@@ -94,4 +150,4 @@ const adminResetPassword = async (req, res, next) => {
   } catch (error) { next(error); }
 };
 
-module.exports = { register, login, getMe, updatePassword, adminResetPassword };
+module.exports = { register, login, getMe, updateProfile, updatePassword, adminResetPassword };

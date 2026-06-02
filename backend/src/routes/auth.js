@@ -1,6 +1,6 @@
 const express = require('express');
 const { body } = require('express-validator');
-const { register, login, getMe, updatePassword, adminResetPassword } = require('../controllers/authController');
+const { register, login, getMe, updateProfile, updatePassword, adminResetPassword } = require('../controllers/authController');
 const { authenticate, authorize } = require('../middleware/auth');
 const { validate } = require('../middleware/validate');
 const router = express.Router();
@@ -18,6 +18,14 @@ router.post('/login', [
 ], validate, login);
 
 router.get('/me', authenticate, getMe);
+
+router.put('/profile', authenticate, [
+  body('name').optional().trim().notEmpty().withMessage('Name cannot be empty'),
+  body('email').optional().isEmail().withMessage('Valid email is required').normalizeEmail(),
+  body('phone').optional({ nullable: true }).trim(),
+  body('country').optional({ nullable: true }).trim(),
+  body('currentPassword').notEmpty().withMessage('Current password is required'),
+], validate, updateProfile);
 
 router.put('/password', authenticate, [
   body('currentPassword').notEmpty().withMessage('Current password required'),

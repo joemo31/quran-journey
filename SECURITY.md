@@ -13,6 +13,14 @@ Use this checklist after delivery or when the repository is public.
    - EmailJS / SMTP / Telegram / WhatsApp tokens
 4. **Do not run** `npm run seed` on production unless you understand what it does (demo users are skipped when `NODE_ENV=production`).
 
+## Change admin email or password (after login)
+
+1. Sign in to the admin dashboard.
+2. Open **Account** in the sidebar (or click your name at the bottom).
+3. Update **Login email**, **Full name**, and **Password** (current password required for profile changes).
+
+URL: `/admin/account`
+
 ## Creating the first production admin
 
 Preferred options (pick one):
